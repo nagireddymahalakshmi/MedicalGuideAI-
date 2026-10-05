@@ -1,0 +1,2720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediGuide AI</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f8ff;
+    color:#183153;
+}
+
+header{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:#1457d9;
+    color:#fff;
+    padding:15px 5%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 3px 14px #0002;
+}
+
+.logo{
+    font-size:27px;
+    font-weight:800;
+}
+
+.header-btn,
+.primary{
+    border:0;
+    border-radius:10px;
+    padding:12px 18px;
+    background:#fff;
+    color:#1457d9;
+    font-weight:700;
+    cursor:pointer;
+}
+
+main{
+    max-width:1200px;
+    margin:auto;
+    padding:25px 18px;
+}
+
+.hero{
+    padding:30px 0;
+}
+
+.hero h1{
+    font-size:42px;
+    margin:0 0 10px;
+}
+
+.hero p{
+    font-size:18px;
+    line-height:1.6;
+    color:#52647c;
+}
+
+.langs{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:18px 0;
+}
+
+.lang{
+    border:1px solid #cbd7ee;
+    background:#fff;
+    padding:10px 16px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+.lang.active{
+    background:#1457d9;
+    color:#fff;
+}
+
+.card{
+    background:#fff;
+    border-radius:18px;
+    padding:24px;
+    margin:20px 0;
+    box-shadow:0 5px 20px #193a7d14;
+}
+
+.hidden{
+    display:none !important;
+}
+
+.upload-area{
+    border:2px dashed #7ca5ec;
+    border-radius:16px;
+    padding:35px;
+    text-align:center;
+    background:#f8fbff;
+}
+
+.upload-area input{
+    margin:18px 0;
+}
+
+.status{
+    padding:12px;
+    border-radius:10px;
+    margin-top:12px;
+}
+
+.info{
+    background:#eaf3ff;
+}
+
+.success{
+    background:#eaf9ef;
+    color:#16713b;
+}
+
+.error{
+    background:#fff0f0;
+    color:#a51e2b;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:18px;
+}
+
+.feature h2{
+    margin-top:0;
+    color:#1457d9;
+}
+
+.btn{
+    background:#1457d9;
+    color:white;
+    border:0;
+    border-radius:9px;
+    padding:11px 16px;
+    font-weight:700;
+    cursor:pointer;
+    margin:5px 5px 5px 0;
+}
+
+.btn.secondary{
+    background:#e8eefc;
+    color:#1457d9;
+}
+
+.output{
+    margin-top:14px;
+    background:#f7f9fd;
+    border-radius:12px;
+    padding:16px;
+    white-space:pre-wrap;
+    line-height:1.7;
+    min-height:70px;
+    overflow:auto;
+    border:1px solid #e5ebf5;
+}
+
+.preview iframe,
+.preview img{
+    width:100%;
+    max-height:500px;
+    border:0;
+    border-radius:12px;
+    object-fit:contain;
+}
+
+.preview img{
+    background:#eef3fb;
+}
+
+textarea,
+input[type=text]{
+    width:100%;
+    padding:13px;
+    border:1px solid #ccd7ea;
+    border-radius:10px;
+    font:inherit;
+}
+
+textarea{
+    min-height:180px;
+}
+
+.chat{
+    height:330px;
+    overflow:auto;
+    background:#f7f9fd;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #e5ebf5;
+}
+
+.msg{
+    padding:10px 13px;
+    border-radius:12px;
+    margin:8px 0;
+    max-width:88%;
+    white-space:pre-wrap;
+    line-height:1.55;
+}
+
+.user{
+    margin-left:auto;
+    background:#dceaff;
+}
+
+.bot{
+    background:#eaf7ef;
+}
+
+.chatrow{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+}
+
+.chatrow input{
+    flex:1;
+}
+
+.notice{
+    background:#fff8df;
+    border-left:5px solid #e2ae00;
+    padding:14px;
+    border-radius:10px;
+    line-height:1.6;
+}
+
+.small{
+    font-size:13px;
+    color:#667085;
+}
+
+.danger{
+    background:#c62828;
+    color:#fff;
+}
+
+.success-box{
+    background:#effaf3;
+    border:1px solid #bce5c9;
+    border-radius:12px;
+    padding:14px;
+    margin-top:12px;
+}
+
+.empty{
+    color:#667085;
+}
+
+.loading{
+    padding:12px;
+    color:#475569;
+}
+
+.error-box{
+    padding:12px;
+    background:#fee2e2;
+    color:#991b1b;
+    border-radius:8px;
+}
+
+.lab-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:14px;
+    margin-top:10px;
+}
+
+.lab-card{
+    background:#f8fafc;
+    border:1px solid #dbe3ea;
+    border-left:5px solid #0f766e;
+    border-radius:12px;
+    padding:16px;
+}
+
+.lab-name{
+    font-size:16px;
+    font-weight:700;
+    color:#334155;
+    margin-bottom:7px;
+}
+
+.lab-number{
+    font-size:20px;
+    font-weight:700;
+    color:#0f766e;
+}
+
+@media(max-width:800px){
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .hero h1{
+        font-size:32px;
+    }
+
+    header{
+        padding:13px 4%;
+    }
+
+    .logo{
+        font-size:22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        MediGuide AI
+    </div>
+
+    <button class="header-btn" onclick="openUpload()">
+        📄 Upload Report
+    </button>
+
+</header>
+
+
+<main>
+
+<section class="hero">
+
+    <h1>
+        Understand Your Medical Report Easily
+    </h1>
+
+    <p>
+        Upload a medical document and MediGuide AI will extract the text,
+        show lab values and medicines, explain the report in simple language,
+        provide report-based recommendations, answer your questions,
+        and prepare a doctor-friendly summary.
+    </p>
+
+    <button class="primary" onclick="openUpload()">
+        Upload Medical Report
+    </button>
+
+
+    <div class="langs">
+
+        <button
+            class="lang active"
+            data-lang="English"
+            onclick="selectLanguage(this,'English')">
+            English
+        </button>
+
+        <button
+            class="lang"
+            data-lang="Kannada"
+            onclick="selectLanguage(this,'Kannada')">
+            ಕನ್ನಡ
+        </button>
+
+        <button
+            class="lang"
+            data-lang="Telugu"
+            onclick="selectLanguage(this,'Telugu')">
+            తెలుగు
+        </button>
+
+        <button
+            class="lang"
+            data-lang="Hindi"
+            onclick="selectLanguage(this,'Hindi')">
+            हिन्दी
+        </button>
+
+    </div>
+
+    <div class="small">
+        Selected language:
+        <b id="languageLabel">English</b>
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     UPLOAD
+===================================================== -->
+
+<section id="uploadSection" class="card">
+
+    <h2>
+        📤 Upload Medical Document
+    </h2>
+
+    <div class="upload-area">
+
+        <p>
+            <b>PDF, JPG or PNG</b>
+        </p>
+
+        <p>
+            Select a medical report, prescription,
+            lab report, scan report or similar medical document.
+        </p>
+
+        <input
+            id="fileInput"
+            type="file"
+            accept=".pdf,.jpg,.jpeg,.png"
+            onchange="uploadDocument(event)"
+        >
+
+        <div id="fileName"></div>
+
+    </div>
+
+    <div id="uploadStatus"></div>
+
+</section>
+
+
+<!-- =====================================================
+     WRONG DOCUMENT
+===================================================== -->
+
+<section id="wrongDocumentSection" class="card hidden">
+
+    <h2>
+        ⚠️ Wrong Document
+    </h2>
+
+    <div
+        id="wrongDocumentMessage"
+        class="output">
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ORIGINAL DOCUMENT
+===================================================== -->
+
+<section id="originalDocumentSection" class="card hidden">
+
+    <h2>
+        📄 Original Document
+    </h2>
+
+    <div
+        id="documentPreview"
+        class="preview">
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     OCR
+===================================================== -->
+
+<section id="ocrSection" class="card hidden">
+
+    <h2>
+        🔎 OCR Extracted Text
+    </h2>
+
+    <div
+        id="ocrOutput"
+        class="output">
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     VERIFICATION
+===================================================== -->
+
+<section id="verificationSection" class="card hidden">
+
+    <h2>
+        ✏️ Verify / Edit Extracted Text
+    </h2>
+
+    <p>
+        Check the OCR text. Correct anything that was read incorrectly,
+        then confirm it.
+    </p>
+
+    <textarea id="verificationText"></textarea>
+
+    <button
+        class="btn"
+        onclick="verifyText()">
+        ✅ Confirm & Analyze
+    </button>
+
+    <button
+        class="btn secondary"
+        onclick="resetVerification()">
+        Reset
+    </button>
+
+    <div id="verificationStatus"></div>
+
+</section>
+
+
+<!-- =====================================================
+     FEATURES
+===================================================== -->
+
+<section
+    id="featuresContainer"
+    class="hidden">
+
+
+    <div class="card">
+
+        <h2>
+            ✨ MediGuide AI Features
+        </h2>
+
+        <p>
+            Your verified medical document is ready.
+            All results below are generated from the verified report.
+        </p>
+
+        <button
+            class="btn"
+            onclick="analyzeAll()">
+            🚀 Analyze Report
+        </button>
+
+        <div class="success-box">
+            After analysis, you can ask MediGuide AI questions
+            and generate a doctor-friendly summary.
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         EXPLANATION + LAB VALUES
+    ================================================== -->
+
+    <div class="grid">
+
+
+        <!-- SIMPLE EXPLANATION -->
+
+        <div class="card feature">
+
+            <h2>
+                💡 Simple Explanation
+            </h2>
+
+            <p>
+                Understand what the report says in easy language.
+            </p>
+
+            <button
+                class="btn"
+                onclick="explainDocument()">
+                Explain in Simple Language
+            </button>
+
+            <div
+                id="explanationOutput"
+                class="output">
+
+                <span class="empty">
+                    Click the button to explain your report.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- LAB VALUES -->
+
+        <div class="card feature">
+
+            <h2>
+                🧪 Lab Values
+            </h2>
+
+            <p>
+                View important laboratory and vital values
+                found in the report.
+            </p>
+
+            <button
+                class="btn"
+                onclick="showLabValues()">
+                Show Lab Values
+            </button>
+
+            <div
+                id="labOutput"
+                class="output">
+
+                <span class="empty">
+                    Click the button to view values.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- MEDICATIONS -->
+
+        <div class="card feature">
+
+            <h2>
+                💊 Medications
+            </h2>
+
+            <p>
+                See medicines and dosage information
+                detected in the report.
+            </p>
+
+            <button
+                class="btn"
+                onclick="showMedications()">
+                Show Medications
+            </button>
+
+            <div
+                id="medicationOutput"
+                class="output">
+
+                <span class="empty">
+                    Click the button to view medicines.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECOMMENDATIONS -->
+
+        <div class="card feature">
+
+            <h2>
+                🌱 Recommendations
+            </h2>
+
+            <p>
+                View recommendations and follow-up instructions
+                actually written in the uploaded report.
+            </p>
+
+            <button
+                class="btn"
+                onclick="showRecommendations()">
+                Show Recommendations
+            </button>
+
+            <div
+                id="recommendationOutput"
+                class="output">
+
+                <span class="empty">
+                    Click the button to view recommendations.
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         CHAT
+    ================================================== -->
+
+    <div class="card">
+
+        <h2>
+            🤖 Ask MediGuide AI
+        </h2>
+
+        <p>
+            Ask natural questions about the uploaded report.
+        </p>
+
+        <div
+            id="chatMessages"
+            class="chat">
+        </div>
+
+        <div class="chatrow">
+
+            <input
+                id="chatInput"
+                type="text"
+                placeholder="Ask about your report..."
+                onkeydown="if(event.key==='Enter')sendChatMessage()"
+            >
+
+            <button
+                class="btn"
+                onclick="sendChatMessage()">
+                Send
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         DOCTOR SUMMARY
+    ================================================== -->
+
+    <div class="card">
+
+        <h2>
+            🩺 Doctor Summary
+        </h2>
+
+        <p>
+            Generate a short structured summary to discuss
+            with a healthcare professional.
+        </p>
+
+        <button
+            class="btn"
+            onclick="generateSummary()">
+            Generate Doctor Summary
+        </button>
+
+        <button
+            id="downloadSummaryBtn"
+            class="btn secondary hidden"
+            onclick="downloadSummary()">
+            Download Summary
+        </button>
+
+        <div
+            id="summaryOutput"
+            class="output">
+
+            <span class="empty">
+                No summary generated yet.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         SOURCE
+    ================================================== -->
+
+    <div class="card">
+
+        <h2>
+            📚 Source / Report Information
+        </h2>
+
+        <div
+            id="sourceOutput"
+            class="output">
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         SAFETY NOTICES AT BOTTOM
+    ================================================== -->
+
+    <div class="card">
+
+        <h2>
+            🛡️ Safety Guardrails
+        </h2>
+
+        <div class="notice">
+
+            MediGuide AI only explains information contained
+            in the uploaded medical document.
+
+            <br><br>
+
+            It does not create a new diagnosis,
+            prescribe medicines,
+            change medicine doses,
+            or replace a healthcare professional.
+
+            <br><br>
+
+            If information is not present in the uploaded
+            document, MediGuide AI should clearly say that
+            the information was not found.
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            ⚠️ Important Safety Notice
+        </h2>
+
+        <div class="notice">
+
+            MediGuide AI is an educational medical-document
+            understanding tool.
+
+            <br><br>
+
+            Always discuss your medical report,
+            medicines and treatment decisions with
+            a qualified healthcare professional.
+
+            <br><br>
+
+            For severe or emergency symptoms,
+            seek immediate medical care.
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<script>
+
+const BACKEND_URL = "http://127.0.0.1:8000";
+
+let uploadedFile = null;
+let verifiedText = "";
+let uploadedFilename = "";
+
+let selectedLanguage =
+    localStorage.getItem("mediguide_language")
+    || "English";
+
+let chatHistory = [];
+let lastSummary = "";
+
+
+/* =====================================================
+   HELPER
+===================================================== */
+
+function $(id){
+    return document.getElementById(id);
+}
+
+
+function openUpload(){
+
+    $("uploadSection").scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+    });
+
+}
+
+
+function showElement(id){
+
+    $(id).classList.remove("hidden");
+
+}
+
+
+function hideElement(id){
+
+    $(id).classList.add("hidden");
+
+}
+
+
+function selectLanguage(button,language){
+
+    selectedLanguage = language;
+
+    localStorage.setItem(
+        "mediguide_language",
+        language
+    );
+
+    document.querySelectorAll(".lang")
+        .forEach(button=>{
+            button.classList.remove("active");
+        });
+
+    button.classList.add("active");
+
+    $("languageLabel").textContent =
+        language;
+
+}
+
+
+document.querySelectorAll(".lang")
+    .forEach(button=>{
+
+        if(
+            button.dataset.lang
+            === selectedLanguage
+        ){
+
+            button.classList.add("active");
+
+        }else{
+
+            button.classList.remove("active");
+
+        }
+
+    });
+
+$("languageLabel").textContent =
+    selectedLanguage;
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function showStatus(
+    id,
+    message,
+    type="info"
+){
+
+    $(id).className =
+        "status " + type;
+
+    $(id).textContent =
+        message;
+
+}
+
+
+/* =====================================================
+   JSON HELPERS
+===================================================== */
+
+function pretty(value){
+
+    if(
+        value === undefined ||
+        value === null
+    ){
+        return "";
+    }
+
+    if(
+        typeof value === "string"
+    ){
+        return value;
+    }
+
+    return JSON.stringify(
+        value,
+        null,
+        2
+    );
+
+}
+
+
+function getText(
+    data,
+    keys
+){
+
+    for(
+        const key of keys
+    ){
+
+        if(
+            data &&
+            data[key] !== undefined &&
+            data[key] !== null
+        ){
+
+            return pretty(
+                data[key]
+            );
+
+        }
+
+    }
+
+    if(
+        typeof data === "string"
+    ){
+
+        return data;
+
+    }
+
+    return pretty(data);
+
+}
+
+
+async function postJSON(
+    path,
+    payload
+){
+
+    const response =
+        await fetch(
+            BACKEND_URL + path,
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:
+                    JSON.stringify(payload)
+            }
+        );
+
+    let data = {};
+
+    try{
+
+        data =
+            await response.json();
+
+    }catch{
+
+        data = {};
+
+    }
+
+    if(!response.ok){
+
+        throw new Error(
+            data.detail ||
+            data.message ||
+            "Request failed: "
+            + response.status
+        );
+
+    }
+
+    return data;
+
+}
+
+
+/* =====================================================
+   UPLOAD
+===================================================== */
+
+async function uploadDocument(event){
+
+    const file =
+        event.target.files[0];
+
+    if(!file){
+        return;
+    }
+
+    uploadedFile = file;
+    uploadedFilename = file.name;
+
+    $("fileName").textContent =
+        "Selected: " + file.name;
+
+    showStatus(
+        "uploadStatus",
+        "⏳ Uploading and reading your medical document...",
+        "info"
+    );
+
+    hideElement(
+        "wrongDocumentSection"
+    );
+
+    hideElement(
+        "featuresContainer"
+    );
+
+    hideElement(
+        "originalDocumentSection"
+    );
+
+    hideElement(
+        "ocrSection"
+    );
+
+    hideElement(
+        "verificationSection"
+    );
+
+
+    try{
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "file",
+            file
+        );
+
+
+        const response =
+            await fetch(
+                BACKEND_URL +
+                "/upload-report",
+                {
+                    method:"POST",
+                    body:formData
+                }
+            );
+
+
+        let data = {};
+
+        try{
+
+            data =
+                await response.json();
+
+        }catch{
+
+            data = {};
+
+        }
+
+
+        if(!response.ok){
+
+            throw new Error(
+                data.detail ||
+                data.message ||
+                "Upload failed."
+            );
+
+        }
+
+
+        /*
+         IMPORTANT:
+         Your backend uses extracted_text.
+        */
+
+        const extractedText =
+            data.extracted_text ||
+            "";
+
+
+        if(
+            !extractedText.trim()
+        ){
+
+            throw new Error(
+                "No readable text was extracted. Please upload a clearer medical document."
+            );
+
+        }
+
+
+        /*
+         IMPORTANT:
+         Respect the backend's real validation.
+        */
+
+        if(
+            data.valid_document === false ||
+            data.status === "rejected"
+        ){
+
+            $("wrongDocumentMessage")
+                .textContent =
+                    data.message ||
+                    "Wrong document. Please upload a valid medical document.";
+
+            showElement(
+                "wrongDocumentSection"
+            );
+
+            showStatus(
+                "uploadStatus",
+                "❌ Wrong document.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const objectURL =
+            URL.createObjectURL(file);
+
+
+        if(
+            file.type ===
+            "application/pdf"
+            ||
+            file.name
+                .toLowerCase()
+                .endsWith(".pdf")
+        ){
+
+            $("documentPreview")
+                .innerHTML =
+                `<iframe
+                    src="${objectURL}"
+                    style="height:500px">
+                </iframe>`;
+
+        }else{
+
+            $("documentPreview")
+                .innerHTML =
+                `<img
+                    src="${objectURL}"
+                    alt="Uploaded medical document">`;
+
+        }
+
+
+        $("ocrOutput")
+            .textContent =
+                extractedText;
+
+
+        $("verificationText")
+            .value =
+                extractedText;
+
+
+        verifiedText =
+            extractedText;
+
+
+        chatHistory = [];
+
+        $("chatMessages")
+            .innerHTML = "";
+
+
+        showElement(
+            "originalDocumentSection"
+        );
+
+        showElement(
+            "ocrSection"
+        );
+
+        showElement(
+            "verificationSection"
+        );
+
+
+        showStatus(
+            "uploadStatus",
+            "✅ Medical document detected. Please verify the extracted text.",
+            "success"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "UPLOAD ERROR:",
+            error
+        );
+
+        showStatus(
+            "uploadStatus",
+            "❌ " + error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   VERIFY
+   THIS WAS ONE OF THE MAIN BUGS
+===================================================== */
+
+async function verifyText(){
+
+    const text =
+        $("verificationText")
+            .value
+            .trim();
+
+
+    if(!text){
+
+        showStatus(
+            "verificationStatus",
+            "Please enter or correct the extracted text.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        /*
+         IMPORTANT FIX:
+
+         Backend expects:
+
+         extracted_text
+         filename
+        */
+
+        const data =
+            await postJSON(
+                "/verify/",
+                {
+                    extracted_text:text,
+                    filename:
+                        uploadedFilename ||
+                        "verified_medical_report"
+                }
+            );
+
+
+        if(
+            data.status !== "success" ||
+            data.verified !== true
+        ){
+
+            throw new Error(
+                data.message ||
+                "The document could not be verified."
+            );
+
+        }
+
+
+        verifiedText =
+            data.extracted_text ||
+            text;
+
+
+        /*
+         Clear old results
+        */
+
+        $("explanationOutput")
+            .innerHTML =
+            '<span class="empty">Click the button to explain your report.</span>';
+
+        $("labOutput")
+            .innerHTML =
+            '<span class="empty">Click the button to view values.</span>';
+
+        $("medicationOutput")
+            .innerHTML =
+            '<span class="empty">Click the button to view medicines.</span>';
+
+        $("recommendationOutput")
+            .innerHTML =
+            '<span class="empty">Click the button to view recommendations.</span>';
+
+        $("summaryOutput")
+            .innerHTML =
+            '<span class="empty">No summary generated yet.</span>';
+
+        hideElement(
+            "downloadSummaryBtn"
+        );
+
+
+        chatHistory = [];
+
+        $("chatMessages")
+            .innerHTML = "";
+
+
+        showElement(
+            "featuresContainer"
+        );
+
+
+        loadSource();
+
+
+        showStatus(
+            "verificationStatus",
+            "✅ Medical document verified and saved. All features are ready.",
+            "success"
+        );
+
+
+        $("featuresContainer")
+            .scrollIntoView({
+                behavior:"smooth",
+                block:"start"
+            });
+
+
+    }catch(error){
+
+        console.error(
+            "VERIFY ERROR:",
+            error
+        );
+
+        showStatus(
+            "verificationStatus",
+            "❌ " + error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetVerification(){
+
+    const original =
+        $("ocrOutput")
+            .textContent ||
+        "";
+
+    $("verificationText")
+        .value =
+        original;
+
+    verifiedText =
+        original;
+
+    hideElement(
+        "featuresContainer"
+    );
+
+    $("verificationStatus")
+        .textContent = "";
+
+}
+
+
+/* =====================================================
+   SIMPLE EXPLANATION
+   FIXED
+===================================================== */
+
+async function explainDocument(){
+
+    if(!verifiedText.trim()){
+
+        alert(
+            "Please upload and verify your medical document first."
+        );
+
+        return;
+
+    }
+
+
+    const output =
+        $("explanationOutput");
+
+
+    output.innerHTML =
+        '<div class="loading">⏳ Preparing a simple explanation from your verified report...</div>';
+
+
+    try{
+
+        /*
+         Backend already gets the verified
+         report from SQLite.
+
+         We still send context because
+         ExplainRequest accepts it.
+        */
+
+        const data =
+            await postJSON(
+                "/explain/",
+                {
+                    context:
+                        verifiedText
+                }
+            );
+
+
+        let answer =
+            data.explanation ||
+            "";
+
+
+        if(
+            !answer.trim()
+        ){
+
+            throw new Error(
+                "The backend returned an empty explanation."
+            );
+
+        }
+
+
+        output.innerHTML =
+            "<strong>💡 SIMPLE EXPLANATION</strong><br><br>" +
+            formatAIAnswer(
+                answer
+            );
+
+
+    }catch(error){
+
+        console.error(
+            "EXPLANATION ERROR:",
+            error
+        );
+
+
+        /*
+         If the AI explanation endpoint fails,
+         still show a useful document-based
+         explanation instead of a blank box.
+        */
+
+        output.innerHTML =
+            "<strong>💡 SIMPLE EXPLANATION</strong><br><br>" +
+            formatAIAnswer(
+                createSimpleDocumentExplanation(
+                    verifiedText
+                )
+            );
+
+    }
+
+}
+
+
+/* =====================================================
+   FORMAT AI ANSWER
+===================================================== */
+
+function formatAIAnswer(answer){
+
+    if(
+        answer === null ||
+        answer === undefined ||
+        answer === ""
+    ){
+
+        return "No explanation was returned.";
+
+    }
+
+
+    let text =
+        String(answer);
+
+
+    return escapeHTML(
+        text
+    ).replace(
+        /\n/g,
+        "<br>"
+    );
+
+}
+
+
+/* =====================================================
+   LOCAL SIMPLE EXPLANATION FALLBACK
+===================================================== */
+
+function createSimpleDocumentExplanation(
+    text
+){
+
+    const clean =
+        String(text || "")
+            .replace(/\r/g,"")
+            .replace(/[ \t]+/g," ")
+            .trim();
+
+
+    if(!clean){
+
+        return "No verified document text is available.";
+
+    }
+
+
+    const lines =
+        clean
+            .split("\n")
+            .map(
+                line =>
+                    line.trim()
+            )
+            .filter(Boolean);
+
+
+    const importantLines =
+        lines.filter(
+            line =>
+                /patient|name|age|gender|date|diagnosis|impression|finding|result|test|hemoglobin|haemoglobin|wbc|rbc|platelet|glucose|sugar|cholesterol|creatinine|urea|thyroid|tsh|t3|t4|blood pressure|temperature|heart rate|pulse|oxygen|spo2|medicine|medication|tablet|capsule|syrup|dose|dosage|recommend|follow.?up|review|advice|instruction/i
+                .test(line)
+        );
+
+
+    const selected =
+        importantLines.length
+        ? importantLines.slice(0,35)
+        : lines.slice(0,25);
+
+
+    return (
+        "Here is what your verified medical document says:\n\n" +
+
+        selected
+            .map(
+                (line,index) =>
+                    `${index + 1}. ${line}`
+            )
+            .join("\n") +
+
+        "\n\nThis explanation is based only on the verified document text."
+    );
+
+}
+
+
+/* =====================================================
+   LAB VALUES
+   FIXED
+===================================================== */
+
+async function showLabValues(){
+
+    if(!verifiedText.trim()){
+
+        alert(
+            "Please upload and verify your medical document first."
+        );
+
+        return;
+
+    }
+
+
+    const output =
+        $("labOutput");
+
+
+    output.innerHTML =
+        '<div class="loading">⏳ Reading laboratory and vital values...</div>';
+
+
+    try{
+
+        /*
+         Backend /lab-values/ expects
+         an ExplainRequest.
+
+         It gets the actual verified
+         report from the database.
+        */
+
+        const data =
+            await postJSON(
+                "/lab-values/",
+                {
+                    context:
+                        verifiedText
+                }
+            );
+
+
+        const values =
+            data.lab_values ||
+            [];
+
+
+        output.innerHTML =
+            formatLabValues(
+                values
+            );
+
+
+    }catch(error){
+
+        console.error(
+            "LAB VALUES ERROR:",
+            error
+        );
+
+
+        output.innerHTML =
+            '<div class="error-box">❌ ' +
+            escapeHTML(
+                error.message
+            ) +
+            '</div>';
+
+    }
+
+}
+
+
+/* =====================================================
+   FORMAT LAB VALUES
+===================================================== */
+
+function formatLabValues(values){
+
+    if(
+        !values ||
+        !Array.isArray(values) ||
+        values.length === 0
+    ){
+
+        return `
+            <div class="empty">
+                No laboratory values were found in the verified report.
+            </div>
+        `;
+
+    }
+
+
+    const cards = [];
+
+
+    values.forEach(
+        item => {
+
+            if(!item){
+                return;
+            }
+
+
+            const test =
+                item.test ||
+                item.name ||
+                "Laboratory Test";
+
+
+            const value =
+                item.value ||
+                item.result ||
+                "Not available";
+
+
+            cards.push(
+                `
+                <div class="lab-card">
+
+                    <div class="lab-name">
+                        🧪 ${escapeHTML(
+                            formatLabName(test)
+                        )}
+                    </div>
+
+                    <div class="lab-number">
+                        ${escapeHTML(
+                            String(value)
+                        )}
+                    </div>
+
+                </div>
+                `
+            );
+
+        }
+    );
+
+
+    if(cards.length === 0){
+
+        return `
+            <div class="empty">
+                No readable laboratory values were found.
+            </div>
+        `;
+
+    }
+
+
+    return `
+        <div class="lab-grid">
+            ${cards.join("")}
+        </div>
+    `;
+
+}
+
+
+/* =====================================================
+   LAB NAME
+===================================================== */
+
+function formatLabName(name){
+
+    const text =
+        String(name || "")
+            .replace(/_/g," ")
+            .trim();
+
+
+    const key =
+        text.toLowerCase();
+
+
+    const known = {
+
+        "hemoglobin":
+            "Hemoglobin",
+
+        "haemoglobin":
+            "Hemoglobin",
+
+        "hb":
+            "Hemoglobin",
+
+        "wbc":
+            "WBC Count",
+
+        "rbc":
+            "RBC Count",
+
+        "platelet":
+            "Platelet Count",
+
+        "platelets":
+            "Platelet Count",
+
+        "glucose":
+            "Glucose",
+
+        "blood sugar":
+            "Blood Sugar",
+
+        "hba1c":
+            "HbA1c",
+
+        "cholesterol":
+            "Cholesterol",
+
+        "hdl":
+            "HDL",
+
+        "ldl":
+            "LDL",
+
+        "triglycerides":
+            "Triglycerides",
+
+        "creatinine":
+            "Creatinine",
+
+        "urea":
+            "Urea",
+
+        "uric acid":
+            "Uric Acid",
+
+        "bilirubin":
+            "Bilirubin",
+
+        "albumin":
+            "Albumin",
+
+        "sodium":
+            "Sodium",
+
+        "potassium":
+            "Potassium",
+
+        "calcium":
+            "Calcium",
+
+        "vitamin d":
+            "Vitamin D",
+
+        "vitamin b12":
+            "Vitamin B12",
+
+        "tsh":
+            "TSH",
+
+        "t3":
+            "T3",
+
+        "t4":
+            "T4",
+
+        "esr":
+            "ESR",
+
+        "crp":
+            "CRP",
+
+        "blood pressure":
+            "Blood Pressure",
+
+        "temperature":
+            "Temperature",
+
+        "oxygen saturation":
+            "Oxygen Saturation",
+
+        "spo2":
+            "Oxygen Saturation"
+
+    };
+
+
+    if(known[key]){
+
+        return known[key];
+
+    }
+
+
+    return text.replace(
+        /\b\w/g,
+        letter =>
+            letter.toUpperCase()
+    );
+
+}
+
+
+/* =====================================================
+   MEDICATIONS
+===================================================== */
+
+async function showMedications(){
+
+    if(!verifiedText.trim()){
+
+        alert(
+            "Please verify the document first."
+        );
+
+        return;
+
+    }
+
+
+    $("medicationOutput")
+        .innerHTML =
+        '<div class="loading">⏳ Reading medicines...</div>';
+
+
+    try{
+
+        const data =
+            await postJSON(
+                "/medications/",
+                {
+                    context:
+                        verifiedText
+                }
+            );
+
+
+        const medicines =
+            data.medications ||
+            [];
+
+
+        if(
+            !Array.isArray(medicines) ||
+            medicines.length === 0
+        ){
+
+            $("medicationOutput")
+                .innerHTML =
+                '<div class="empty">No medicines were detected in the report.</div>';
+
+            return;
+
+        }
+
+
+        $("medicationOutput")
+            .innerHTML =
+            medicines
+                .map(
+                    medicine =>
+                        `<div class="success-box">
+                            💊 ${escapeHTML(
+                                medicine
+                            )}
+                        </div>`
+                )
+                .join("");
+
+
+    }catch(error){
+
+        $("medicationOutput")
+            .innerHTML =
+            '<div class="error-box">❌ ' +
+            escapeHTML(
+                error.message
+            ) +
+            '</div>';
+
+    }
+
+}
+
+
+/* =====================================================
+   RECOMMENDATIONS
+   USE CURRENT VERIFIED REPORT
+===================================================== */
+
+async function showRecommendations(){
+
+    if(!verifiedText.trim()){
+
+        alert(
+            "Please verify the document first."
+        );
+
+        return;
+
+    }
+
+
+    $("recommendationOutput")
+        .innerHTML =
+        '<div class="loading">⏳ Reading recommendations from your report...</div>';
+
+
+    try{
+
+        const response =
+            await fetch(
+                BACKEND_URL +
+                "/current-report/"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                data.detail ||
+                "Could not load the verified report."
+            );
+
+        }
+
+
+        const structured =
+            data.structured_report ||
+            {};
+
+
+        const recommendations =
+            structured.recommendations;
+
+
+        if(
+            recommendations &&
+            recommendations !==
+            "Not available"
+        ){
+
+            $("recommendationOutput")
+                .textContent =
+                recommendations;
+
+            return;
+
+        }
+
+
+        /*
+         If the structured extractor did not
+         find a heading, search the verified
+         OCR text for recommendation-like lines.
+        */
+
+        const lines =
+            verifiedText
+                .split(/\r?\n/)
+                .map(
+                    line =>
+                        line.trim()
+                )
+                .filter(Boolean);
+
+
+        const recommendationLines =
+            lines.filter(
+                line =>
+                    /recommendation|recommendations|follow.?up|review|advice|instruction|return|revisit|treatment plan|plan:/i
+                    .test(line)
+            );
+
+
+        if(
+            recommendationLines.length
+        ){
+
+            $("recommendationOutput")
+                .textContent =
+                recommendationLines.join(
+                    "\n"
+                );
+
+            return;
+
+        }
+
+
+        $("recommendationOutput")
+            .innerHTML =
+            `
+            <div class="empty">
+                No specific recommendations or follow-up
+                instructions were found in the uploaded document.
+            </div>
+            `;
+
+
+    }catch(error){
+
+        $("recommendationOutput")
+            .innerHTML =
+            '<div class="error-box">❌ ' +
+            escapeHTML(
+                error.message
+            ) +
+            '</div>';
+
+    }
+
+}
+
+
+/* =====================================================
+   ANALYZE ALL
+===================================================== */
+
+async function analyzeAll(){
+
+    if(!verifiedText.trim()){
+
+        alert(
+            "Please verify the medical document first."
+        );
+
+        return;
+
+    }
+
+
+    await explainDocument();
+
+    await showLabValues();
+
+    await showMedications();
+
+    await showRecommendations();
+
+    loadSource();
+
+}
+
+
+/* =====================================================
+   AI CHAT
+===================================================== */
+
+function addMessage(
+    role,
+    text
+){
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.className =
+        "msg " +
+        (
+            role === "user"
+            ? "user"
+            : "bot"
+        );
+
+
+    div.textContent =
+        text;
+
+
+    $("chatMessages")
+        .appendChild(div);
+
+
+    $("chatMessages")
+        .scrollTop =
+        $("chatMessages")
+            .scrollHeight;
+
+
+    return div;
+
+}
+
+
+async function sendChatMessage(){
+
+    const input =
+        $("chatInput");
+
+
+    const question =
+        input.value.trim();
+
+
+    if(!question){
+        return;
+    }
+
+
+    if(!verifiedText.trim()){
+
+        alert(
+            "Please upload and verify the medical document first."
+        );
+
+        return;
+
+    }
+
+
+    addMessage(
+        "user",
+        question
+    );
+
+
+    input.value = "";
+
+
+    const thinking =
+        addMessage(
+            "assistant",
+            "⏳ Thinking about your report..."
+        );
+
+
+    try{
+
+        /*
+         Your current main.py accepts:
+
+         question
+         context
+
+         So send exactly those fields.
+        */
+
+        const data =
+            await postJSON(
+                "/ask/",
+                {
+                    question:
+                        question,
+
+                    context:
+                        verifiedText
+                }
+            );
+
+
+        const answer =
+            data.answer ||
+            "I could not generate an answer.";
+
+
+        thinking.textContent =
+            answer;
+
+
+        chatHistory.push(
+            {
+                role:"user",
+                content:question
+            },
+            {
+                role:"assistant",
+                content:answer
+            }
+        );
+
+
+    }catch(error){
+
+        thinking.textContent =
+            "❌ " +
+            error.message;
+
+    }
+
+}
+
+
+/* =====================================================
+   DOCTOR SUMMARY
+===================================================== */
+
+async function generateSummary(){
+
+    if(!verifiedText.trim()){
+
+        alert(
+            "Please verify the medical document first."
+        );
+
+        return;
+
+    }
+
+
+    $("summaryOutput")
+        .textContent =
+        "⏳ Creating doctor-friendly summary...";
+
+
+    hideElement(
+        "downloadSummaryBtn"
+    );
+
+
+    try{
+
+        const response =
+            await fetch(
+                BACKEND_URL +
+                "/current-report/"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                data.detail ||
+                "Could not load report."
+            );
+
+        }
+
+
+        const report =
+            data.structured_report ||
+            {};
+
+
+        let summary =
+            "DOCTOR-FRIENDLY REPORT SUMMARY\n\n";
+
+
+        summary +=
+            "Patient Information\n";
+
+
+        const patient =
+            report.patient_information ||
+            {};
+
+
+        summary +=
+            "Name: " +
+            (patient.name ||
+            "Not available") +
+            "\n";
+
+
+        summary +=
+            "Age: " +
+            (patient.age ||
+            "Not available") +
+            "\n";
+
+
+        summary +=
+            "Gender: " +
+            (patient.gender ||
+            "Not available") +
+            "\n";
+
+
+        summary +=
+            "Date: " +
+            (patient.date ||
+            "Not available") +
+            "\n\n";
+
+
+        summary +=
+            "Important Findings\n";
+
+
+        summary +=
+            (
+                report.important_findings ||
+                "Not available"
+            ) +
+            "\n\n";
+
+
+        summary +=
+            "Laboratory Values\n";
+
+
+        const labs =
+            report.lab_values ||
+            [];
+
+
+        if(
+            Array.isArray(labs) &&
+            labs.length
+        ){
+
+            summary +=
+                labs
+                    .map(
+                        lab =>
+                            "- " +
+                            lab.test +
+                            ": " +
+                            lab.value
+                    )
+                    .join("\n");
+
+        }else{
+
+            summary +=
+                "No laboratory values detected.";
+
+        }
+
+
+        summary +=
+            "\n\nDiagnosis / Impression\n";
+
+
+        summary +=
+            (
+                report.diagnosis_or_impression ||
+                "Not available"
+            );
+
+
+        summary +=
+            "\n\nMedications Mentioned\n";
+
+
+        const medicines =
+            report.medications ||
+            [];
+
+
+        if(
+            Array.isArray(medicines) &&
+            medicines.length
+        ){
+
+            summary +=
+                medicines
+                    .map(
+                        medicine =>
+                            "- " + medicine
+                    )
+                    .join("\n");
+
+        }else{
+
+            summary +=
+                "No medications detected.";
+
+        }
+
+
+        summary +=
+            "\n\nRecommendations Written in Report\n";
+
+
+        summary +=
+            (
+                report.recommendations ||
+                "Not available"
+            );
+
+
+        summary +=
+            "\n\nSafety Notice\n";
+
+
+        summary +=
+            "This summary only organizes information "
+            +
+            "found in the uploaded medical document. "
+            +
+            "It does not create a diagnosis or change treatment.";
+
+
+        lastSummary =
+            summary;
+
+
+        $("summaryOutput")
+            .textContent =
+            summary;
+
+
+        showElement(
+            "downloadSummaryBtn"
+        );
+
+
+    }catch(error){
+
+        $("summaryOutput")
+            .textContent =
+            "❌ " +
+            error.message;
+
+    }
+
+}
+
+
+/* =====================================================
+   DOWNLOAD SUMMARY
+===================================================== */
+
+function downloadSummary(){
+
+    if(!lastSummary){
+        return;
+    }
+
+
+    const blob =
+        new Blob(
+            [lastSummary],
+            {
+                type:
+                    "text/plain;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const link =
+        document.createElement(
+            "a"
+        );
+
+
+    link.href =
+        url;
+
+
+    link.download =
+        "MediGuide_Doctor_Summary.txt";
+
+
+    document.body.appendChild(
+        link
+    );
+
+
+    link.click();
+
+
+    link.remove();
+
+
+    URL.revokeObjectURL(
+        url
+    );
+
+}
+
+
+/* =====================================================
+   SOURCE
+===================================================== */
+
+function loadSource(){
+
+    $("sourceOutput")
+        .textContent =
+        "File: " +
+        (
+            uploadedFilename ||
+            "—"
+        ) +
+
+        "\nLanguage: " +
+        selectedLanguage +
+
+        "\nBackend: " +
+        BACKEND_URL;
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value){
+
+    return String(
+        value
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+loadSource();
+
+</script>
+
+</body>
+</html>
